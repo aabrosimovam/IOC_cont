@@ -19,4 +19,5 @@ SOURCES += main.cpp \
 
 HEADERS += \
     ioc.h \
-    iprocessor.h
+    iprocessor.h \
+    computer.h
