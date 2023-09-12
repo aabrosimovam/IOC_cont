@@ -41,21 +41,23 @@ public:
      * вы можете рассмотреть и другие варианты для повышения эффективности.
      */
 
-    // Абстрактный базовый класс для всех фабрик,
-    //которые предоставляют способы создания объектов
+// Абстрактный базовый класс для всех фабрик,
+//которые предоставляют способы создания объектов
     class FactoryRoot
     {
     public:
         virtual ~FactoryRoot() {}
     };
 
-
+// Коллекция фабрик для определенных типов объектов в формате: ключ - значение
     std::map<int, std::shared_ptr<FactoryRoot>> m_factories;
 
-    //Получить экземпляр объекта
+// Фабрика определенного типа T
     template<typename T>
     class CFactory : public FactoryRoot
     {
+    //Объявление переменной m_functor типа function, которая представляет функциональный объект,
+    //способный создавать и возвращать объект типа T. Этот объект будет храниться внутри фабрики.
         std::function<std::shared_ptr<T>()> m_functor;
 
     public:
@@ -70,17 +72,24 @@ public:
         }
     };
 
+//Получить экземпляр объекта из контейнера
     template<typename T>
-    std::shared_ptr<T> GetObject() {
+    std::shared_ptr<T> GetObject()
+    {
+        // Получаем typeId фабрики
         auto typeId = GetTypeID<T>();
+        // Получаем необходимую нам фабрику
         auto factoryBase = m_factories[typeId];
+        // Приводим указатель к типу конкретной фабрики
         auto factory = std::static_pointer_cast<CFactory<T>>(factoryBase);
+        // Возвращаем объект созданный с использованием заданного функтора фабрики
         return factory->GetObject();
     }
 
-    //Регистрация экземпляров
+//Регистрация экземпляров
 
-    //Самая простая реализация - зарегистрировать функтор
+//Самая простая реализация - зарегистрировать функтор
+//Регистрируем функтор в IoC_контейнере для создания объектов типа TInterface
     template<typename TInterface, typename... TS>
     void RegisterFunctor(
         std::function<std::shared_ptr<TInterface>(std::shared_ptr<TS>... ts)> functor) {
@@ -88,21 +97,21 @@ public:
                 [ = ] { return functor(GetObject<TS>()...); });
     }
 
-    //Регистрация одного экземпляра объекта
+//Регистрация одного экземпляра объекта
     template<typename TInterface>
     void RegisterInstance(std::shared_ptr<TInterface> t) {
         m_factories[GetTypeID<TInterface>()] = std::make_shared<CFactory<TInterface>>(
                 [ = ] { return t; });
     }
 
-    //Подаем указатель на функцию
+//Подаем указатель на функцию
     template<typename TInterface, typename... TS>
     void RegisterFunctor(std::shared_ptr<TInterface> (*functor)(std::shared_ptr<TS>... ts)) {
         RegisterFunctor(
             std::function<std::shared_ptr<TInterface>(std::shared_ptr<TS>... ts)>(functor));
     }
 
-    //Фабрика, которая будет вызывать конструктор, для каждого экземпляра
+//Фабрика, которая будет вызывать конструктор, для каждого экземпляра
     template<typename TInterface, typename TConcrete, typename... TArguments>
     void RegisterFactory() {
         RegisterFunctor(
@@ -113,7 +122,7 @@ public:
         }));
     }
 
-    //Фабрика, которая будет возвращать один экземпляр
+//Фабрика, которая будет возвращать один экземпляр
     template<typename TInterface, typename TConcrete, typename... TArguments>
     void RegisterInstance() {
         RegisterInstance<TInterface>(std::make_shared<TConcrete>(GetObject<TArguments>()...));
