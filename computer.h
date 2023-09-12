@@ -5,11 +5,14 @@ class Computer
 {
     IProcessor *Processor;
    public:
-
-//        IntelProcessor* GetProcessor(double speed, ProcessorType type, string version)
-//    {
-//       return new IntelProcessor(speed, type, version);
-//    }
+    Computer(IProcessor* processor)
+    {
+        Processor = processor;
+    }
+    string GetProcessor()
+    {
+       return Processor->GetterProcessor();
+    }
 };
 
 #endif // COMPUTER_H

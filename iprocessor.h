@@ -16,15 +16,6 @@ class IProcessor
     virtual ~IProcessor(){}
 };
 
-//class Computer
-//{
-//   public:
-//        IntelProcessor* GetProcessor(double speed, ProcessorType type, string version)
-//    {
-//       return new IntelProcessor(speed, type, version);
-//    }
-//};
-
 class IntelProcessor:public IProcessor
 {
      string Version;
