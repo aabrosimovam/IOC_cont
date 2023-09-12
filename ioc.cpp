@@ -1,6 +1,6 @@
 #include "ioc.h"
 
-ioc::ioc()
-{
+//ioc::ioc()
+//{
 
-}
+//}
