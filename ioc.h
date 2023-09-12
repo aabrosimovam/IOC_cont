@@ -2,10 +2,10 @@
 #define IOC_H
 
 
-class ioc
+class IOC
 {
 public:
-    ioc();
+    IOC();
 };
 
 #endif // IOC_H

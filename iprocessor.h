@@ -11,8 +11,9 @@ class IProcessor
 {
   public:
     IProcessor(){}
-    //getter + setter ??
-    ~IProcessor(){}
+    virtual string GetterProcessor()=0;
+    virtual void SetterProcessor(string version, ProcessorType type, double speed)=0;
+    virtual ~IProcessor(){}
 };
 
 //class Computer
@@ -31,13 +32,20 @@ class IntelProcessor:public IProcessor
      double Speed;
    public:
      IntelProcessor(){}
-     //getter + setter ?? rewrite
-     ~IntelProcessor(){}
+     string GetterProcessor()
+     {
+         string speed = to_string(Speed);
+         string type = to_string(Type);
+         return  "Processor for " + Version + ". It`s speed = " + speed + "; Type = " + type;
+     }
 
-  string GetProcessorInfo()
-  {
-   return "Processor for" + Version + Speed + Type;
-  }
+     void SetterProcessor(string version, ProcessorType type, double speed)
+     {
+         Version = version;
+         Type = type;
+         Speed = speed;
+     }
+     ~IntelProcessor(){}
 
  };
 
@@ -48,7 +56,19 @@ class AMDProcessor:public IProcessor
     double Speed;
   public:
     AMDProcessor(){}
-    //getter + setter ?? rewrite
+    string GetterProcessor()
+    {
+        string speed = to_string(Speed);
+        string type = to_string(Type);
+        return  "Processor for " + Version + ". It`s speed = " + speed + "; Type = " + type;
+    }
+
+    void SetterProcessor(string version, ProcessorType type, double speed)
+    {
+        Version = version;
+        Type = type;
+        Speed = speed;
+    }
     ~AMDProcessor(){}
 };
 
