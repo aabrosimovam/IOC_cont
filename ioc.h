@@ -112,6 +112,8 @@ public:
     }
 
 //Фабрика, которая будет вызывать конструктор, для каждого экземпляра
+//Регистрация фабрики для создания объектов, где TInterface - интерфейс,
+//TConcrete  - конкретная реализация интерфейса, TArguments - набор параметор передаваемых в конструктор TConcrete
     template<typename TInterface, typename TConcrete, typename... TArguments>
     void RegisterFactory() {
         RegisterFunctor(

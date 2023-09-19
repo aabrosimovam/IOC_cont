@@ -1,6 +1,9 @@
 #ifndef COMPUTER_H
 #define COMPUTER_H
 
+#include <iostream>
+#include <iprocessor.h>
+
 class Computer
 {
     IProcessor *Processor;

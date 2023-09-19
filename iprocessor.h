@@ -1,6 +1,9 @@
 #ifndef IPROCESSOR_H
 #define IPROCESSOR_H
 
+#include <iostream>
+using namespace std;
+
 enum ProcessorType
 {
    x86=86,
